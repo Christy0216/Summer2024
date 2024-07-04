@@ -1,12 +1,13 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text } from "react-native";
+import React from "react";
 
-const Header = () => {
+const Header = ({ children, name }) => {
   return (
     <View>
-      <Text>Header</Text>
+      <Text>Welcome to {name}</Text>
+      {children}
     </View>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
