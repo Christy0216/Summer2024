@@ -2,7 +2,7 @@ import { View, Text, TextInput } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { Button } from "react-native";
 
-const Input = () => {
+const Input = ({ inputHandler }) => {
   const [text, setText] = useState("");
   const [thankyouVisible, setThankyouVisible] = useState(false);
   const inputRef = useRef();
@@ -20,8 +20,9 @@ const Input = () => {
     setThankyouVisible(false);
   };
 
-  function handleConfirm () {
+  function handleConfirm() {
     console.log(text);
+    inputHandler(text);
   }
 
   return (
@@ -35,7 +36,12 @@ const Input = () => {
         ref={inputRef}
       />
       {thankyouVisible && <Text>Thank you</Text>}
-      <Button title="Confirm" onPress={() => {handleConfirm}} />
+      <Button
+        title="Confirm"
+        onPress={() => {
+          handleConfirm();
+        }}
+      />
     </View>
   );
 };
