@@ -1,5 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Button,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import Header from "./Components/Header";
 import Input from "./Components/Input";
 import React, { useState } from "react";
@@ -16,16 +23,19 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <Header name={appName} theme="dark">
+    <SafeAreaView style={styles.container}>
+      <View style={styles.topContainer}>
+        <Header name={appName} theme="dark" />
         {/* <Text>Child 1</Text> */}
         {/* <Text>Child 2</Text> */}
-      </Header>
+        <Button title="Add a goal" onPress={() => setModalVisible(true)} />
+      </View>
       <Input inputHandler={handleInputData} isModalVisible={modalVisible} />
-      <Text>{receivedText}</Text>
+      <View style={styles.buttomContainer}>
+        <Text style={styles.textStyle}>{receivedText}</Text>
+      </View>
       <StatusBar style="auto" />
-      <Button title="Add a goal" onPress={() => setModalVisible(true)} />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -33,7 +43,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
+    // alignItems: "center",
     justifyContent: "center",
+  },
+  textStyle: {
+    color: "darkmagenta",
+  },
+  topContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+  buttomContainer: {
+    flex: 4,
+    backgroundColor: "#dcd",
+    alignItems: "center",
   },
 });
