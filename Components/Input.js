@@ -1,5 +1,6 @@
 import { View, Text, TextInput } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
+import { Button } from "react-native";
 
 const Input = () => {
   const [text, setText] = useState("");
@@ -19,6 +20,10 @@ const Input = () => {
     setThankyouVisible(false);
   };
 
+  function handleConfirm () {
+    console.log(text);
+  }
+
   return (
     <View>
       <TextInput
@@ -30,6 +35,7 @@ const Input = () => {
         ref={inputRef}
       />
       {thankyouVisible && <Text>Thank you</Text>}
+      <Button title="Confirm" onPress={() => {handleConfirm}} />
     </View>
   );
 };
