@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
   input: {
     width: '80%',
     padding: 10,
-    borderColor: 'gray',
-    borderWidth: 1,
+    borderColor: 'darkmagenta',
+    borderWidth: 3,
     marginBottom: 20,
   },
   buttonContainer: {
