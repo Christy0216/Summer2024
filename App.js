@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, View, TouchableOpacity, Text, StatusBar } from 'react-native';
-import Header from './Components/Header';
-import Input from './Components/Input';
+import React, { useState } from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  StatusBar,
+} from "react-native";
+import Header from "./Components/Header";
+import Input from "./Components/Input";
 
 export default function App() {
-  const [receivedText, setReceivedText] = useState('');
+  const [receivedText, setReceivedText] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [goals, setGoals] = useState([]);
 
   const handleConfirm = (inputText) => {
     setReceivedText(inputText);
     setModalVisible(false);
+    const newGoal = { text: inputText, key: Math.random() };
+    setGoals((currentGoals) => {
+      return [...currentGoals, newGoal];
+    });
   };
 
   const handleCancel = () => {
@@ -36,9 +48,14 @@ export default function App() {
       />
       <StatusBar style="auto" />
       <View style={styles.bottomContainer}>
-        <View style={styles.textContainer}>
-        <Text style={styles.textStyle}>{receivedText}</Text>
-        </View>
+        {goals.map((goalObj) => {
+          console.log(goalObj);
+          return (
+            <View key={goalObj.id} style={styles.textContainer}>
+              <Text style={styles.textStyle}>{goalObj.text}</Text>
+            </View>
+          );
+        })}
       </View>
     </SafeAreaView>
   );
@@ -47,38 +64,39 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     // backgroundColor: '#fff',
   },
   textStyle: {
-    color: 'darkmagenta',
+    color: "darkmagenta",
     fontSize: 25,
     marginVertical: 5,
   },
   textContainer: {
-    color: 'darkmagenta',
+    color: "darkmagenta",
     fontSize: 25,
-    backgroundColor: '#aaa',
+    backgroundColor: "#aaa",
     borderRadius: 5,
   },
   topContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 50,
     marginBottom: 50,
   },
   bottomContainer: {
-    backgroundColor: 'thistle',
+    backgroundColor: "thistle",
     flex: 4,
-    alignItems: 'center',
+    alignItems: "center",
+    rowGap: 10,
   },
   goalButton: {
-    backgroundColor: 'dodgerblue',
+    backgroundColor: "dodgerblue",
     padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
   },
 });
