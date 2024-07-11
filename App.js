@@ -55,9 +55,11 @@ const styles = StyleSheet.create({
   topContainer: {
     alignItems: 'center',
     marginTop: 50,
+    marginBottom: 50,
   },
   bottomContainer: {
-    flex: 1,
+    backgroundColor: 'thistle',
+    flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
   },
