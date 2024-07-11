@@ -7,6 +7,7 @@ import {
   Text,
   StatusBar,
   ScrollView,
+  FlatList,
 } from "react-native";
 import Header from "./Components/Header";
 import Input from "./Components/Input";
@@ -52,16 +53,26 @@ export default function App() {
         {goals.length === 0 ? (
           <Text style={styles.textStyle}>Please Add a Goal</Text>
         ) : (
-          <ScrollView>
-            {goals.map((goalObj) => {
-              console.log(goalObj);
+          <FlatList
+            renderItem={({ item }) => {
               return (
-                <View key={goalObj.id} style={styles.textContainer}>
-                  <Text style={styles.textStyle}>{goalObj.text}</Text>
+                <View key={item.id} style={styles.textContainer}>
+                  <Text style={styles.textStyle}>{item.text}</Text>
                 </View>
               );
-            })}
-          </ScrollView>
+            }}
+            data={goals}
+          />
+          //   <ScrollView>
+          //     {goals.map((goalObj) => {
+          //       console.log(goalObj);
+          //       return (
+          //         <View key={goalObj.id} style={styles.textContainer}>
+          //           <Text style={styles.textStyle}>{goalObj.text}</Text>
+          //         </View>
+          //       );
+          //     })}
+          //   </ScrollView>
         )}
       </View>
     </SafeAreaView>
@@ -84,6 +95,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     backgroundColor: "#aaa",
     borderRadius: 5,
+    marginTop: 10,
+    marginLeft: 10,
   },
   topContainer: {
     alignItems: "center",
