@@ -36,7 +36,9 @@ export default function App() {
       />
       <StatusBar style="auto" />
       <View style={styles.bottomContainer}>
+        <View style={styles.textContainer}>
         <Text style={styles.textStyle}>{receivedText}</Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -46,11 +48,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
   },
   textStyle: {
     color: 'darkmagenta',
-    fontSize: 16,
+    fontSize: 25,
+    marginVertical: 5,
+  },
+  textContainer: {
+    color: 'darkmagenta',
+    fontSize: 25,
+    backgroundColor: '#aaa',
+    borderRadius: 5,
   },
   topContainer: {
     alignItems: 'center',
@@ -60,7 +69,6 @@ const styles = StyleSheet.create({
   bottomContainer: {
     backgroundColor: 'thistle',
     flex: 4,
-    justifyContent: 'center',
     alignItems: 'center',
   },
   goalButton: {

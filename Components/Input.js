@@ -22,7 +22,7 @@ const Input = ({ isVisible, onConfirm, onCancel }) => {
   };
 
   return (
-    <Modal animationType="slide" visible={isVisible} transparent={false}>
+    <Modal animationType="slide" visible={isVisible} transparent={true}>
       <View style={styles.container}>
         <TextInput
           style={styles.input}
