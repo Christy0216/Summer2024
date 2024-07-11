@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import Header from "./Components/Header";
 import Input from "./Components/Input";
+import GoalItem from "./Components/GoalItem";
 
 export default function App() {
   const [receivedText, setReceivedText] = useState("");
@@ -29,6 +30,12 @@ export default function App() {
   const handleCancel = () => {
     setModalVisible(false);
   };
+
+  function handleDelete(deletedId) {
+    setGoals((currentGoals) => {
+      return currentGoals.filter((goal) => goal.id !== deletedId);
+    });
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -55,11 +62,7 @@ export default function App() {
         ) : (
           <FlatList
             renderItem={({ item }) => {
-              return (
-                <View key={item.id} style={styles.textContainer}>
-                  <Text style={styles.textStyle}>{item.text}</Text>
-                </View>
-              );
+              return <GoalItem goal={item} deleteHandler={handleDelete} />;
             }}
             data={goals}
           />
