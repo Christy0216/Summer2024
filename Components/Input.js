@@ -1,8 +1,16 @@
-import { Modal, View, TextInput, Button, Text, StyleSheet, Image } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
+import {
+  Modal,
+  View,
+  TextInput,
+  Button,
+  Text,
+  StyleSheet,
+  Image,
+} from "react-native";
+import React, { useState, useEffect, useRef } from "react";
 
 const Input = ({ isVisible, onConfirm, onCancel }) => {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const inputRef = useRef();
 
   useEffect(() => {
@@ -13,38 +21,42 @@ const Input = ({ isVisible, onConfirm, onCancel }) => {
 
   const handleConfirm = () => {
     onConfirm(text);
-    setText('');
+    setText("");
   };
 
   const handleCancel = () => {
     onCancel();
-    setText('');
+    setText("");
   };
 
   return (
-    <Modal animationType="slide" visible={isVisible} transparent={false}>
+    <Modal animationType="slide" visible={isVisible} transparent={true}>
       <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          placeholder="Type something..."
-          value={text}
-          onChangeText={setText}
-          ref={inputRef}
-        />
-        <View style={styles.buttonContainer}>
-          <Button title="Confirm" onPress={handleConfirm} disabled={!text} />
-          <Button title="Cancel" onPress={handleCancel} />
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Type something..."
+            value={text}
+            onChangeText={setText}
+            ref={inputRef}
+          />
+          <View style={styles.buttonContainer}>
+            <Button title="Confirm" onPress={handleConfirm} disabled={!text} />
+            <Button title="Cancel" onPress={handleCancel} />
+          </View>
+          <Image
+            style={styles.image}
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/512/2617/2617812.png",
+            }}
+            alt="Target Icon"
+          />
+          <Image
+            style={styles.image}
+            source={require("../assets/2617812.png")}
+            alt="Local Target Icon"
+          />
         </View>
-        <Image
-          style={styles.image}
-          source={{ uri: "https://cdn-icons-png.flaticon.com/512/2617/2617812.png" }}
-          alt="Target Icon"
-        />
-        <Image
-          style={styles.image}
-          source={require("../assets/2617812.png")}
-          alt="Local Target Icon"
-        />
       </View>
     </Modal>
   );
@@ -53,25 +65,33 @@ const Input = ({ isVisible, onConfirm, onCancel }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 20,
   },
   input: {
-    width: '80%',
+    width: "80%",
     padding: 10,
-    borderColor: 'darkmagenta',
+    borderColor: "darkmagenta",
     borderWidth: 3,
     marginBottom: 20,
+    marginTop: 20,
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
   },
   image: {
     width: 100,
     height: 100,
+    marginTop: 20,
+  },
+  inputContainer: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    width: "80%",
+    alignItems: "center",
     marginTop: 20,
   },
 });
