@@ -1,52 +1,50 @@
-import { View, Text, TextInput, Modal, StyleSheet } from "react-native";
-import React, { useState, useEffect, useRef } from "react";
-import { Button } from "react-native";
+import { Modal, View, TextInput, Button, Text, StyleSheet, Image } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
 
-const Input = ({ inputHandler, isModalVisible }) => {
-  const [text, setText] = useState("");
-  const [thankyouVisible, setThankyouVisible] = useState(false);
-  const inputRef = useRef(null);
+const Input = ({ isVisible, onConfirm, onCancel }) => {
+  const [text, setText] = useState('');
+  const inputRef = useRef();
 
   useEffect(() => {
-    if (inputRef.current) {
+    if (inputRef.current && isVisible) {
       inputRef.current.focus();
     }
-  }, [isModalVisible]);
+  }, [isVisible]);
 
-  const handleBlur = () => {
-    setThankyouVisible(true);
+  const handleConfirm = () => {
+    onConfirm(text);
+    setText('');
   };
 
-  const handleChangeText = (changedText) => {
-    setText(changedText);
-    setThankyouVisible(false);
+  const handleCancel = () => {
+    onCancel();
+    setText('');
   };
-
-  function handleConfirm() {
-    console.log(text);
-    inputHandler(text);
-  }
 
   return (
-    <Modal animationType="slide" visible={isModalVisible}>
+    <Modal animationType="slide" visible={isVisible} transparent={false}>
       <View style={styles.container}>
         <TextInput
+          style={styles.input}
+          placeholder="Type something..."
           value={text}
-          placeholder="Type something"
-          autoCapitalize={"none"}
-          onChangeText={handleChangeText}
-          onBlur={handleBlur}
+          onChangeText={setText}
           ref={inputRef}
         />
-        {thankyouVisible && <Text>Thank you</Text>}
-        <View style={styles.buttonStyle}>
-          <Button
-            title="Confirm"
-            onPress={() => {
-              handleConfirm();
-            }}
-          />
+        <View style={styles.buttonContainer}>
+          <Button title="Confirm" onPress={handleConfirm} disabled={!text} />
+          <Button title="Cancel" onPress={handleCancel} />
         </View>
+        <Image
+          style={styles.image}
+          source={{ uri: "https://cdn-icons-png.flaticon.com/512/2617/2617812.png" }}
+          alt="Target Icon"
+        />
+        <Image
+          style={styles.image}
+          source={require("../assets/2617812.png")}
+          alt="Local Target Icon"
+        />
       </View>
     </Modal>
   );
@@ -55,13 +53,26 @@ const Input = ({ inputHandler, isModalVisible }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
   },
-  buttonStyle: {
-    width: "30%",
-    marginTop: 10,
+  input: {
+    width: '80%',
+    padding: 10,
+    borderColor: 'darkmagenta',
+    borderWidth: 3,
+    marginBottom: 20,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+  },
+  image: {
+    width: 100,
+    height: 100,
+    marginTop: 20,
   },
 });
 
