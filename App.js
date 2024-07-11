@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
   StatusBar,
+  ScrollView,
 } from "react-native";
 import Header from "./Components/Header";
 import Input from "./Components/Input";
@@ -48,14 +49,20 @@ export default function App() {
       />
       <StatusBar style="auto" />
       <View style={styles.bottomContainer}>
-        {goals.map((goalObj) => {
-          console.log(goalObj);
-          return (
-            <View key={goalObj.id} style={styles.textContainer}>
-              <Text style={styles.textStyle}>{goalObj.text}</Text>
-            </View>
-          );
-        })}
+        {goals.length === 0 ? (
+          <Text style={styles.textStyle}>Please Add a Goal</Text>
+        ) : (
+          <ScrollView>
+            {goals.map((goalObj) => {
+              console.log(goalObj);
+              return (
+                <View key={goalObj.id} style={styles.textContainer}>
+                  <Text style={styles.textStyle}>{goalObj.text}</Text>
+                </View>
+              );
+            })}
+          </ScrollView>
+        )}
       </View>
     </SafeAreaView>
   );
