@@ -21,7 +21,7 @@ export default function Home() {
   const handleConfirm = (inputText) => {
     setReceivedText(inputText);
     setModalVisible(false);
-    const newGoal = { text: inputText, key: Math.random() };
+    const newGoal = { text: inputText, id: Math.random().toString() };
     setGoals((currentGoals) => {
       return [...currentGoals, newGoal];
     });
@@ -35,6 +35,11 @@ export default function Home() {
     setGoals((currentGoals) => {
       return currentGoals.filter((goal) => goal.id !== deletedId);
     });
+  }
+
+  function handlePressGoal() {
+    console.log("Goal pressed");
+    navigation.navigate("Details");
   }
 
   return (
@@ -62,7 +67,13 @@ export default function Home() {
         ) : (
           <FlatList
             renderItem={({ item }) => {
-              return <GoalItem goal={item} deleteHandler={handleDelete} />;
+              return (
+                <GoalItem
+                  goal={item}
+                  deleteHandler={handleDelete}
+                  pressHandler={handlePressGoal}
+                />
+              );
             }}
             data={goals}
           />
