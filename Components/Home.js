@@ -6,14 +6,13 @@ import {
   TouchableOpacity,
   Text,
   StatusBar,
-  ScrollView,
   FlatList,
 } from "react-native";
 import Header from "./Header";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [receivedText, setReceivedText] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
@@ -21,7 +20,7 @@ export default function Home() {
   const handleConfirm = (inputText) => {
     setReceivedText(inputText);
     setModalVisible(false);
-    const newGoal = { text: inputText, id: Math.random().toString() };
+    const newGoal = { text: inputText, id: Math.random() };
     setGoals((currentGoals) => {
       return [...currentGoals, newGoal];
     });
@@ -37,9 +36,9 @@ export default function Home() {
     });
   }
 
-  function handlePressGoal() {
-    console.log("Goal pressed");
-    navigation.navigate("Details");
+  function handlePressGoal(pressedGoal) {
+    console.log("Goal pressed", pressedGoal);
+    navigation.navigate("Details", { goalObj: pressedGoal });
   }
 
   return (
