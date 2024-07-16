@@ -2,10 +2,10 @@ import { View, Text, Button } from "react-native";
 import React from "react";
 
 export default function GoalDetails({ navigation, route }) {
-  console.log(route.params);
+  console.log("Route params:", route.params);
   return (
     <View>
-      {route.params ? (
+      {route.params.goalObj ? (
         <Text>
           You are seeing the details of the goal with text:
           {route.params.goalObj.text} and id:{route.params.goalObj.id}
@@ -15,7 +15,9 @@ export default function GoalDetails({ navigation, route }) {
       )}
       <Button
         title="More details"
-        onPress={() => navigation.navigate("Details")}
+        onPress={() =>
+          navigation.push("Details", { goalObj: route.params.goalObj })
+        }
       />
     </View>
   );

@@ -13,12 +13,10 @@ import Input from "./Input";
 import GoalItem from "./GoalItem";
 
 export default function Home({ navigation }) {
-  const [receivedText, setReceivedText] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
 
   const handleConfirm = (inputText) => {
-    setReceivedText(inputText);
     setModalVisible(false);
     const newGoal = { text: inputText, id: Math.random() };
     setGoals((currentGoals) => {

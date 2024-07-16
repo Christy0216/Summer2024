@@ -3,12 +3,8 @@ import { View, Text, StyleSheet } from "react-native";
 import { Button } from "react-native";
 
 const GoalItem = ({ goal, deleteHandler, pressHandler }) => {
-  function goalPressed() {
-    pressHandler();
-  }
-
   return (
-    <View key={goal.id} style={styles.textContainer}>
+    <View style={styles.textContainer}>
       <Text style={styles.textStyle}>{goal.text}</Text>
       <View style={styles.buttonStyle}>
         <Button
@@ -16,7 +12,7 @@ const GoalItem = ({ goal, deleteHandler, pressHandler }) => {
           title="X"
           onPress={() => deleteHandler(goal.id)}
         />
-        <Button color="black" title="i" onPress={() => pressHandler()} />
+        <Button color="black" title="i" onPress={() => pressHandler(goal)} />
       </View>
     </View>
   );
