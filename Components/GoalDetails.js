@@ -1,24 +1,36 @@
-import { View, Text, Button } from "react-native";
-import React from "react";
+import React, { useLayoutEffect, useState } from "react";
+import { View, Text, Button, StyleSheet } from "react-native";
+import CommonHeader from "./CommonHeader";
 
 export default function GoalDetails({ navigation, route }) {
-  console.log("Route params:", route.params);
+  const [isWarning, setIsWarning] = useState(false);
+  const { goalObj } = route.params;
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button title="Warning" onPress={() => setIsWarning((prev) => !prev)} />
+      ),
+    });
+  }, [navigation]);
+
   return (
     <View>
-      {route.params.goalObj ? (
-        <Text>
-          You are seeing the details of the goal with text:
-          {route.params.goalObj.text} and id:{route.params.goalObj.id}
-        </Text>
-      ) : (
-        <Text>More details</Text>
-      )}
+      <CommonHeader title={isWarning ? "Warning!" : goalObj.text} />
+      <Text style={isWarning ? styles.warningText : null}>
+        You are seeing the details of the goal with text: {goalObj.text} and id:{" "}
+        {goalObj.id}
+      </Text>
       <Button
         title="More details"
-        onPress={() =>
-          navigation.push("Details", { goalObj: route.params.goalObj })
-        }
+        onPress={() => navigation.push("Details", { goalObj })}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  warningText: {
+    color: "red",
+  },
+});

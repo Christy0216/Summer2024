@@ -1,8 +1,10 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Button } from "react-native";
+import React from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const GoalItem = ({ goal, deleteHandler, pressHandler }) => {
+const GoalItem = ({ goal, deleteHandler }) => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.textContainer}>
       <Text style={styles.textStyle}>{goal.text}</Text>
@@ -12,7 +14,11 @@ const GoalItem = ({ goal, deleteHandler, pressHandler }) => {
           title="X"
           onPress={() => deleteHandler(goal.id)}
         />
-        <Button color="black" title="i" onPress={() => pressHandler(goal)} />
+        <Button
+          color="black"
+          title="i"
+          onPress={() => navigation.navigate('Details', { goalObj: goal })}
+        />
       </View>
     </View>
   );
@@ -20,20 +26,20 @@ const GoalItem = ({ goal, deleteHandler, pressHandler }) => {
 
 const styles = StyleSheet.create({
   textStyle: {
-    color: "darkmagenta",
+    color: 'darkmagenta',
     fontSize: 25,
   },
   textContainer: {
-    color: "darkmagenta",
-    backgroundColor: "#aaa",
+    color: 'darkmagenta',
+    backgroundColor: '#aaa',
     marginVertical: 15,
     borderRadius: 5,
     padding: 15,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   buttonStyle: {
-    flexDirection: "row",
+    flexDirection: 'row',
     margin: 5,
   },
 });

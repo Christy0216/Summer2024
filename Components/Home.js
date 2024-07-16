@@ -11,6 +11,7 @@ import {
 import Header from "./Header";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
+import CommonHeader from "./CommonHeader";
 
 export default function Home({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -41,7 +42,7 @@ export default function Home({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header />
+      <CommonHeader title="All Goals" />
       <View style={styles.topContainer}>
         <TouchableOpacity
           style={styles.goalButton}
