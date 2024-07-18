@@ -7,10 +7,13 @@ import {
   Text,
   StatusBar,
   FlatList,
+  Pressable,
 } from "react-native";
 import Header from "./Header";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
+import CommonHeader from "./CommonHeader";
+import PressableButton from "./PressableButton";
 
 export default function Home({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -41,16 +44,23 @@ export default function Home({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header />
+      <CommonHeader title="All Goals" />
       <View style={styles.topContainer}>
-        <TouchableOpacity
+        {/* <Header name={appName} theme="dark" /> */}
+        <PressableButton
+        pressedFunction={() => {
+            setModalVisible(true);
+        }} componentStyle={styles.buttonStyle}>
+            <Text style={styles.textStyle}>Add a goal</Text>
+        </PressableButton>
+        {/* <TouchableOpacity
           style={styles.goalButton}
           onPress={() => setModalVisible(true)}
           onPressIn={() => {}}
           onPressOut={() => {}}
         >
           <Text style={styles.buttonText}>Add a goal</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <Input
         isVisible={modalVisible}
@@ -94,7 +104,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    // backgroundColor: '#fff',
   },
   textStyle: {
     color: "darkmagenta",
@@ -111,14 +120,13 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     alignItems: "center",
-    marginTop: 50,
-    marginBottom: 50,
+    justifyContent: "center",
+    flex: 1,
   },
   bottomContainer: {
-    backgroundColor: "thistle",
+    backgroundColor: "#dcd",
     flex: 4,
     alignItems: "center",
-    rowGap: 10,
   },
   goalButton: {
     backgroundColor: "dodgerblue",
@@ -129,5 +137,9 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 16,
+  },
+  buttonStyle: {
+    borderRadius: 5,
+    padding: 10,
   },
 });
