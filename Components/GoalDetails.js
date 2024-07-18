@@ -9,7 +9,7 @@ export default function GoalDetails({ navigation, route }) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button title="Warning" onPress={() => setIsWarning((prev) => !prev)} />
+        <Button title="Warning" onPress={() => setIsWarning((prev) => !prev)}  color='grey' />
       ),
     });
   }, [navigation]);
