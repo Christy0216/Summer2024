@@ -12,10 +12,10 @@ import {
 import Header from "./Header";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
-import CommonHeader from "./CommonHeader";
 import PressableButton from "./PressableButton";
 
 export default function Home({ navigation }) {
+  const appName = "Summer 2024 Class";
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
 
@@ -44,14 +44,15 @@ export default function Home({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <CommonHeader title="All Goals" />
       <View style={styles.topContainer}>
-        {/* <Header name={appName} theme="dark" /> */}
+        <Header name={appName} theme="dark" />
         <PressableButton
-        pressedFunction={() => {
+          pressedFunction={() => {
             setModalVisible(true);
-        }} componentStyle={styles.buttonStyle}>
-            <Text style={styles.textStyle}>Add a goal</Text>
+          }}
+          componentStyle={styles.buttonStyle}
+        >
+          <Text style={styles.textStyle}>Add a goal</Text>
         </PressableButton>
         {/* <TouchableOpacity
           style={styles.goalButton}
@@ -78,7 +79,7 @@ export default function Home({ navigation }) {
                 <GoalItem
                   goal={item}
                   deleteHandler={handleDelete}
-                  pressHandler={handlePressGoal}
+                //   pressHandler={handlePressGoal}
                 />
               );
             }}
@@ -96,6 +97,7 @@ export default function Home({ navigation }) {
           //   </ScrollView>
         )}
       </View>
+      <StatusBar style="auto" />
     </SafeAreaView>
   );
 }
@@ -103,20 +105,17 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
     justifyContent: "center",
   },
   textStyle: {
     color: "darkmagenta",
     fontSize: 25,
-    marginVertical: 5,
   },
   textContainer: {
     color: "darkmagenta",
-    fontSize: 25,
     backgroundColor: "#aaa",
-    borderRadius: 5,
-    marginTop: 10,
-    marginLeft: 10,
+    marginVertical: 15,
   },
   topContainer: {
     alignItems: "center",
