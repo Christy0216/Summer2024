@@ -11,13 +11,17 @@ export default function GoalDetails({ navigation, route }) {
   }
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => {
-        return (
-          <Button title="Warning" color="white" onPress={warningHandler} />
-        );
-      },
+      headerRight: () => (
+        <Button
+          title="warning"
+          onPress={() => {
+            warningHandler();
+            navigation.setOptions({ title: "Warning" });
+          }}
+        />
+      ),
     });
-  }, []);
+  }, [navigation]);
 
   return (
     <View>
