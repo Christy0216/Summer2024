@@ -27,9 +27,9 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     backgroundColor: "red",
   },
-//   defaultStyle: {
-//     backgroundColor: "beige",
-//     margin: 10,
-//     padding: 5,
-//   },
+  defaultStyle: {
+    backgroundColor: "beige",
+    margin: 10,
+    padding: 5,
+  },
 });
