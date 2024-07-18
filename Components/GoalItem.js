@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Pressable } from "react-native";
+import PressableButton from "./PressableButton";
 
 const GoalItem = ({ goal, deleteHandler }) => {
   const navigation = useNavigation();
@@ -17,15 +18,23 @@ const GoalItem = ({ goal, deleteHandler }) => {
       >
         <Text style={styles.textStyle}>{goal.text}</Text>
         <View style={styles.buttonStyle}>
-          <Button
+          {/* <Button
             color="black"
             title="X"
             onPress={() => deleteHandler(goal.id)}
-          />
+          /> */}
           {/* <Button
           color="black"
           title="i"
         /> */}
+          <PressableButton
+        //   componentStyle={styles.buttonStyle}
+            pressedFunction={() => {
+              deleteHandler(goal.id);
+            }}
+          >
+            <Text>X</Text>
+          </PressableButton>
         </View>
       </Pressable>
     </View>
@@ -44,9 +53,9 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: "#aaa",
   },
-    pressedStyle: {
-        opacity: 0.5,
-    },
+  pressedStyle: {
+    opacity: 0.5,
+  },
   textContainer: {
     color: "darkmagenta",
     backgroundColor: "#aaa",
@@ -54,8 +63,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   buttonStyle: {
-    flexDirection: "row",
-    margin: 5,
+    marginLeft: 15,
+    backgroundColor: "grey",
+    padding: 5,
   },
 });
 
