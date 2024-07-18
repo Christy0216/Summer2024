@@ -10,12 +10,15 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Home" component={Home} />
         <Stack.Screen
           name="Details"
           component={GoalDetails}
-          options={({ route }) => ({
-            title: route.params.goalObj.text,
-          })}
+          options={({ navigation, route }) => {
+            return {
+              title: route.params ? route.params.goalObj.text : "Details",
+            };
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

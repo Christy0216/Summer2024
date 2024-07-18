@@ -15,21 +15,12 @@ const GoalItem = ({ goal, deleteHandler }) => {
         style={({ pressed }) => {
           return [styles.horizontalContainer, pressed && styles.pressedStyle];
         }}
-        onPress={() => navigation.navigate("Details", { goalObj: goal })}
+        onPress={function () {navigation.navigate("Details", { goalObj: goal });}}
       >
         <Text style={styles.textStyle}>{goal.text}</Text>
         <View style={styles.buttonStyle}>
-          {/* <Button
-            color="black"
-            title="X"
-            onPress={() => deleteHandler(goal.id)}
-          /> */}
-          {/* <Button
-          color="black"
-          title="i"
-        /> */}
           <PressableButton
-        //   componentStyle={styles.buttonStyle}
+          componentStyle={styles.buttonStyle}
             pressedFunction={() => {
               deleteHandler(goal.id);
             }}

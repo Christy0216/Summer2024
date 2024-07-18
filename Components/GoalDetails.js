@@ -1,36 +1,45 @@
 import React, { useLayoutEffect, useState } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
-import CommonHeader from "./CommonHeader";
+import { useEffect } from "react";
 
 export default function GoalDetails({ navigation, route }) {
-  const [isWarning, setIsWarning] = useState(false);
-  const { goalObj } = route.params;
-
-  useLayoutEffect(() => {
+  const [warning, setWarning] = useState(false);
+  function warningHandler() {
+    console.log("warning");
+    setWarning(true);
+    navigation.setOptions({ title: "Warning!" });
+  }
+  useEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <Button title="Warning" onPress={() => setIsWarning((prev) => !prev)}  color='grey' />
-      ),
+      headerRight: () => {
+        return (
+          <Button title="Warning" color="white" onPress={warningHandler} />
+        );
+      },
     });
-  }, [navigation]);
+  }, []);
 
   return (
     <View>
-      <CommonHeader title={isWarning ? "Warning!" : goalObj.text} />
-      <Text style={isWarning ? styles.warningText : null}>
-        You are seeing the details of the goal with text: {goalObj.text} and id:{" "}
-        {goalObj.id}
-      </Text>
+      {route.params ? (
+        <Text style={warning && styles.warningStyle}>
+          You are seeing the details of the goal with text :
+          {route.params.goalObj.text} and id:{route.params.goalObj.id}
+        </Text>
+      ) : (
+        <Text>More details</Text>
+      )}
       <Button
         title="More details"
-        onPress={() => navigation.push("Details", { goalObj })}
+        onPress={() => {
+          navigation.push("Details");
+        }}
       />
     </View>
   );
 }
-
 const styles = StyleSheet.create({
-  warningText: {
+  warningStyle: {
     color: "red",
   },
 });
