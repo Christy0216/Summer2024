@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -13,18 +13,34 @@ import Header from "./Header";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
+import { writeToDB } from "../Firebase/firestoreHelper";
+import { collection, onSnapshot } from "firebase/firestore";
+import { database } from "../Firebase/firebaseSetup";
 
 export default function Home({ navigation }) {
   const appName = "Summer 2024 Class";
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
+  useEffect(() => {
+    let newArray = [];
+    onSnapshot(collection(database, "goals"), (querysnapShot) => {
+      if (!querysnapShot.empty) {
+        querysnapShot.forEach((docSnapshot) => {
+          console.log(docSnapshot.data());
+          newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
+        });
+      }
+      setGoals(newArray);
+    });
+  }, []);
 
   const handleConfirm = (inputText) => {
     setModalVisible(false);
     const newGoal = { text: inputText, id: Math.random() };
-    setGoals((currentGoals) => {
-      return [...currentGoals, newGoal];
-    });
+    // setGoals((currentGoals) => {
+    //   return [...currentGoals, newGoal];
+    // });
+    writeToDB(newGoal, "goals");
   };
 
   const handleCancel = () => {
