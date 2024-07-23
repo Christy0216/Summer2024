@@ -3,11 +3,9 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  TouchableOpacity,
   Text,
   StatusBar,
   FlatList,
-  Pressable,
 } from "react-native";
 import Header from "./Header";
 import Input from "./Input";
@@ -16,17 +14,21 @@ import PressableButton from "./PressableButton";
 import { writeToDB } from "../Firebase/firestoreHelper";
 import { collection, onSnapshot } from "firebase/firestore";
 import { database } from "../Firebase/firebaseSetup";
+import { deleteFromDB } from "../Firebase/firestoreHelper";
 
 export default function Home({ navigation }) {
   const appName = "Summer 2024 Class";
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
+  const collectionName = "goals";
+
   useEffect(() => {
-    let newArray = [];
-    onSnapshot(collection(database, "goals"), (querysnapShot) => {
-      if (!querysnapShot.empty) {
-        querysnapShot.forEach((docSnapshot) => {
-          console.log(docSnapshot.data());
+    onSnapshot(collection(database, collectionName), (querySnapShot) => {
+      let newArray = [];
+
+      if (!querySnapShot.empty) {
+        querySnapShot.forEach((docSnapshot) => {
+          console.log("onsnap ", docSnapshot.id);
           newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
         });
       }
@@ -48,9 +50,11 @@ export default function Home({ navigation }) {
   };
 
   function handleDelete(deletedId) {
-    setGoals((currentGoals) => {
-      return currentGoals.filter((goal) => goal.id !== deletedId);
-    });
+    console.log("goal deleted", deletedId);
+    // setGoals((currentGoals) => {
+    //   return currentGoals.filter((goal) => goal.id !== deletedId);
+    // });
+    deleteFromDB(deletedId, collectionName);
   }
 
   function handlePressGoal(pressedGoal) {
