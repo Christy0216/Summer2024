@@ -13,10 +13,8 @@ import Header from "./Header";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
-import app from "../Firebase/firebaseSetup";
 
 export default function Home({ navigation }) {
-  console.log(app);
   const appName = "Summer 2024 Class";
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
@@ -140,7 +138,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonStyle: {
+    backgroundColor: "lightyellow",
     borderRadius: 5,
+    margin: 10,
     padding: 10,
   },
 });
