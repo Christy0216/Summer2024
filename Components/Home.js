@@ -1,30 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
   View,
-  TouchableOpacity,
   Text,
   StatusBar,
   FlatList,
-  Pressable,
 } from "react-native";
 import Header from "./Header";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
+import { writeToDB } from "../Firebase/firestoreHelper";
+import { collection, onSnapshot } from "firebase/firestore";
+import { database } from "../Firebase/firebaseSetup";
+import { deleteFromDB } from "../Firebase/firestoreHelper";
 
 export default function Home({ navigation }) {
   const appName = "Summer 2024 Class";
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
+  const collectionName = "goals";
+
+  useEffect(() => {
+    onSnapshot(collection(database, collectionName), (querySnapShot) => {
+      let newArray = [];
+
+      if (!querySnapShot.empty) {
+        querySnapShot.forEach((docSnapshot) => {
+          console.log("onsnap ", docSnapshot.id);
+          newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
+        });
+      }
+      setGoals(newArray);
+    });
+  }, []);
 
   const handleConfirm = (inputText) => {
     setModalVisible(false);
     const newGoal = { text: inputText, id: Math.random() };
-    setGoals((currentGoals) => {
-      return [...currentGoals, newGoal];
-    });
+    // setGoals((currentGoals) => {
+    //   return [...currentGoals, newGoal];
+    // });
+    writeToDB(newGoal, "goals");
   };
 
   const handleCancel = () => {
@@ -32,9 +50,11 @@ export default function Home({ navigation }) {
   };
 
   function handleDelete(deletedId) {
-    setGoals((currentGoals) => {
-      return currentGoals.filter((goal) => goal.id !== deletedId);
-    });
+    console.log("goal deleted", deletedId);
+    // setGoals((currentGoals) => {
+    //   return currentGoals.filter((goal) => goal.id !== deletedId);
+    // });
+    deleteFromDB(deletedId, collectionName);
   }
 
   function handlePressGoal(pressedGoal) {
@@ -79,7 +99,7 @@ export default function Home({ navigation }) {
                 <GoalItem
                   goal={item}
                   deleteHandler={handleDelete}
-                //   pressHandler={handlePressGoal}
+                  //   pressHandler={handlePressGoal}
                 />
               );
             }}
@@ -138,7 +158,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonStyle: {
+    backgroundColor: "lightyellow",
     borderRadius: 5,
+    margin: 10,
     padding: 10,
   },
 });
