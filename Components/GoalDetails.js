@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useState } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import { useEffect } from "react";
 import { addWarningToGoal } from "../Firebase/firestoreHelper";
+import GoalUsers from "./GoalUsers";
 
 export default function GoalDetails({ navigation, route }) {
   const [warning, setWarning] = useState(false);
@@ -37,6 +38,7 @@ export default function GoalDetails({ navigation, route }) {
           navigation.push("Details");
         }}
       />
+      <GoalUsers id={route.params.goalObj.id} />
     </View>
   );
 }

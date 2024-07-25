@@ -10,6 +10,7 @@ import {
 import Header from "./Header";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
+import GoalUsers from "./GoalUsers";
 import PressableButton from "./PressableButton";
 import { writeToDB } from "../Firebase/firestoreHelper";
 import { collection, onSnapshot } from "firebase/firestore";
@@ -30,7 +31,6 @@ export default function Home({ navigation }) {
 
         if (!querySnapShot.empty) {
           querySnapShot.forEach((docSnapshot) => {
-            console.log("onsnap ", docSnapshot.id);
             newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
           });
         }
