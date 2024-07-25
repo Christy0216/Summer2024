@@ -1,11 +1,17 @@
-import { View, Text } from "react-native";
+import { View, Text, Dimensions } from "react-native";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet,useWindowDimensions } from "react-native";
 
-const Header = ({ children }) => {
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
+
+const Header = ({ children, name }) => {
+  const { width, height } = useWindowDimensions();
   return (
     <View style={styles.header}>
-      <Text style={styles.headerText}>Welcome to My awesome app</Text>
+      <Text style={(styles.headerText, { paddingVertical: height < 415 ? 0 : 5 })}>
+        Welcome to My awesome app
+      </Text>
       {children}
     </View>
   );

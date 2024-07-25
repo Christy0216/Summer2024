@@ -10,6 +10,7 @@ import {
 import Header from "./Header";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
+import GoalUsers from "./GoalUsers";
 import PressableButton from "./PressableButton";
 import { writeToDB } from "../Firebase/firestoreHelper";
 import { collection, onSnapshot } from "firebase/firestore";
@@ -23,17 +24,23 @@ export default function Home({ navigation }) {
   const collectionName = "goals";
 
   useEffect(() => {
-    onSnapshot(collection(database, collectionName), (querySnapShot) => {
-      let newArray = [];
+    const unsubscribe = onSnapshot(
+      collection(database, collectionName),
+      (querySnapShot) => {
+        let newArray = [];
 
-      if (!querySnapShot.empty) {
-        querySnapShot.forEach((docSnapshot) => {
-          console.log("onsnap ", docSnapshot.id);
-          newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
-        });
+        if (!querySnapShot.empty) {
+          querySnapShot.forEach((docSnapshot) => {
+            newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
+          });
+        }
+        setGoals(newArray);
       }
-      setGoals(newArray);
-    });
+    );
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const handleConfirm = (inputText) => {

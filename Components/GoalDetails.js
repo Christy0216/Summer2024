@@ -1,21 +1,20 @@
 import React, { useLayoutEffect, useState } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import { useEffect } from "react";
+import { addWarningToGoal } from "../Firebase/firestoreHelper";
+import GoalUsers from "./GoalUsers";
 
 export default function GoalDetails({ navigation, route }) {
   const [warning, setWarning] = useState(false);
-  function warningHandler() {
-    console.log("warning");
-    setWarning(true);
-    navigation.setOptions({ title: "Warning!" });
-  }
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <Button
           title="warning"
           onPress={() => {
-            warningHandler();
+            setWarning(true);
+            addWarningToGoal(route.params.goalObj.id, "goals");
             navigation.setOptions({ title: "Warning" });
           }}
         />
@@ -27,8 +26,8 @@ export default function GoalDetails({ navigation, route }) {
     <View>
       {route.params ? (
         <Text style={warning && styles.warningStyle}>
-          You are seeing the details of the goal with text :
-          {route.params.goalObj.text} and id:{route.params.goalObj.id}
+          You are seeing the details of the goal with text:
+          {route.params.goalObj.text} and id: {route.params.goalObj.id}
         </Text>
       ) : (
         <Text>More details</Text>
@@ -39,6 +38,7 @@ export default function GoalDetails({ navigation, route }) {
           navigation.push("Details");
         }}
       />
+      <GoalUsers id={route.params.goalObj.id} />
     </View>
   );
 }

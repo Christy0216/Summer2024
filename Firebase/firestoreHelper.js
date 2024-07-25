@@ -1,10 +1,16 @@
-import { addDoc, deleteDoc, doc, collection } from "firebase/firestore";
+import {
+  addDoc,
+  deleteDoc,
+  setDoc,
+  doc,
+  collection,
+  getDocs,
+} from "firebase/firestore";
 import { database } from "./firebaseSetup";
 
 export async function writeToDB(data, collectionName) {
   try {
     const docId = await addDoc(collection(database, collectionName), data);
-    console.log(docId);
   } catch (error) {
     console.error("Error adding document: ", error);
   }
@@ -15,5 +21,33 @@ export async function deleteFromDB(id, collectionName) {
     await deleteDoc(doc(database, collectionName, id));
   } catch (error) {
     console.error("Error deleting document: ", error);
+  }
+}
+
+export async function addWarningToGoal(id, collectionName) {
+  try {
+    await setDoc(
+      doc(database, collectionName, id),
+      {
+        warning: true,
+      },
+      { merge: true }
+    );
+  } catch (error) {
+    console.error("Error updating document with warning: ", error);
+  }
+}
+
+export async function readAllDocs(collectionName) {
+  try {
+    const querySnapShot = await getDocs(collection(database, collectionName));
+    let newArray = [];
+    querySnapShot.forEach((docSnapshot) => {
+      newArray.push(docSnapshot.data());
+    });
+    console.log("All documents: ", newArray);
+    return newArray;
+  } catch (error) {
+    console.error("Error reading all documents: ", error);
   }
 }
