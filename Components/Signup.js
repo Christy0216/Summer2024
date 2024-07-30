@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, Alert, StyleSheet } from "react-native";
+import { View, Text, TextInput, Button, Alert } from "react-native";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../Firebase/firebaseSetup";
 
@@ -17,12 +17,12 @@ export default function Signup({ navigation }) {
       Alert.alert("Error", "Please fill in all fields.");
       return;
     }
-    if (password !== confirmPassword) {
-      Alert.alert("Passwords do not match");
-      return;
-    }
     if (password.length < 6) {
       Alert.alert("Password too short");
+      return;
+    }
+    if (password !== confirmPassword) {
+      Alert.alert("Passwords do not match");
       return;
     }
     try {
@@ -53,63 +53,35 @@ export default function Signup({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Email</Text>
+    <View>
+      <Text>Email</Text>
       <TextInput
-        style={styles.input}
-        placeholder="Enter your email"
+        placeholder="Email"
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
         keyboardType="email-address"
       />
-      <Text style={styles.label}>Password</Text>
+      <Text>Password</Text>
       <TextInput
-        style={styles.input}
-        placeholder="Enter your password"
+        placeholder="Password"
         secureTextEntry={true}
         value={password}
         onChangeText={setPassword}
+        autoCompleteType="off"
+        textContentType="newPassword"
       />
-      <Text style={styles.label}>Confirm Password</Text>
+      <Text>Confirm Password</Text>
       <TextInput
-        style={styles.input}
-        placeholder="Confirm your password"
+        placeholder="Confirm Password"
         secureTextEntry={true}
         value={confirmPassword}
         onChangeText={setConfirmPassword}
+        autoCompleteType="off"
+        textContentType="newPassword"
       />
-      <Button title="Register" onPress={signupHandler} color="#6200ee" />
-      <View style={styles.space} />
-      <Button title="Already Registered? Login" onPress={loginHandler} color="#6200ee" />
+      <Button title="Register" onPress={signupHandler} />
+      <Button title="Already Registered? Login" onPress={loginHandler} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#f9f9f9'
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    marginVertical: 8,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    borderRadius: 4,
-  },
-  label: {
-    alignSelf: 'flex-start',
-    marginBottom: 4,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  space: {
-    height: 20,
-  }
-});

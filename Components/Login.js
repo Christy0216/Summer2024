@@ -1,53 +1,37 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, Alert, StyleSheet } from "react-native";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../Firebase/firebaseSetup";
 
-export default function Signup({ navigation }) {
+export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const loginHandler = () => {
-    navigation.replace("Login");
+  const signupHandler = () => {
+    navigation.replace("Signup");
   };
 
-  const signupHandler = async () => {
-    if (!email.trim() || !password.trim() || !confirmPassword.trim()) {
-      Alert.alert("Error", "Please fill in all fields.");
+  const loginHandler = async () => {
+    if (!email.trim() || !password.trim()) {
+      Alert.alert("Error", "Please enter both email and password.");
       return;
     }
-    if (password !== confirmPassword) {
-      Alert.alert("Passwords do not match");
-      return;
-    }
-    if (password.length < 6) {
-      Alert.alert("Password too short");
-      return;
-    }
+
     try {
-      const userCredential = await createUserWithEmailAndPassword(
+      const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
-      console.log("User created:", userCredential.user);
-      navigation.navigate("Home");
+      console.log("User logged in:", userCredential.user);
+      navigation.replace("Home");
     } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
-        Alert.alert(
-          "Email already in use",
-          "Please use a different email address."
-        );
-      } else if (error.code === "auth/invalid-email") {
-        Alert.alert("Invalid Email", "Please enter a valid email address.");
-      } else if (error.code === "auth/weak-password") {
-        Alert.alert(
-          "Weak Password",
-          "Password should be at least 6 characters long."
-        );
+      if (error.code === "auth/user-not-found") {
+        Alert.alert("Login Error", "No user found with this email.");
+      } else if (error.code === "auth/wrong-password") {
+        Alert.alert("Login Error", "Incorrect password.");
       } else {
-        Alert.alert("Signup Error", error.message);
+        Alert.alert("Login Error", error.message);
       }
     }
   };
@@ -71,17 +55,9 @@ export default function Signup({ navigation }) {
         value={password}
         onChangeText={setPassword}
       />
-      <Text style={styles.label}>Confirm Password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm your password"
-        secureTextEntry={true}
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-      />
-      <Button title="Register" onPress={signupHandler} color="#6200ee" />
+      <Button title="Login" onPress={loginHandler} color="darkmagenta" />
       <View style={styles.space} />
-      <Button title="Already Registered? Login" onPress={loginHandler} color="#6200ee" />
+      <Button title="Signup" onPress={signupHandler} color="#darkmagenta" />
     </View>
   );
 }
@@ -89,27 +65,27 @@ export default function Signup({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
-    backgroundColor: '#f9f9f9'
+    backgroundColor: "#f9f9f9",
   },
   input: {
-    width: '100%',
+    width: "100%",
     height: 40,
     marginVertical: 8,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     padding: 10,
     borderRadius: 4,
   },
   label: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     marginBottom: 4,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
   space: {
     height: 20,
-  }
+  },
 });

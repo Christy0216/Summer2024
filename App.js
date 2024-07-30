@@ -5,8 +5,12 @@ import Signup from "./Components/Signup";
 import Login from "./Components/Login";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./Firebase/firebaseSetup";
+import Profile from "./Components/Profile";
+import Iconicons from "react-native-vector-icons/Ionicons";
+import PressableButton from "./Components/PressableButton";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,12 +22,52 @@ const AuthStack = (
 );
 const AppStack = (
   <>
-    <Stack.Screen name="Home" component={Home} />
+    <Stack.Screen
+      name="Home"
+      component={Home}
+      options={({ navigation }) => {
+        return {
+          title: "All Goals",
+          headerRight: () => {
+            return (
+              <PressableButton
+                pressedFunction={() => {
+                  navigation.navigate("Profile");
+                }}
+              >
+                <Iconicons name="person" size={24} color="black" />
+              </PressableButton>
+            );
+          },
+        };
+      }}
+    />
     <Stack.Screen
       name="Details"
       component={GoalDetails}
       options={({ navigation, route }) => {
         return { title: route.params ? route.params.goalObj.text : "Details" };
+      }}
+    />
+    <Stack.Screen
+      name="Profile"
+      component={Profile}
+      options={{
+        headerRight: () => {
+          return (
+            <PressableButton
+              pressedFunction={() => {
+                try {
+                  signOut(auth);
+                } catch (error) {
+                  console.log("Sign out error", error);
+                }
+              }}
+            >
+              <AntDesign name="logout" size={24} color="black" />
+            </PressableButton>
+          );
+        },
       }}
     />
   </>
