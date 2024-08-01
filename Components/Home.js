@@ -50,8 +50,9 @@ export default function Home({ navigation }) {
   }, []);
 
   const handleConfirm = (inputText) => {
+    console.log("callback", inputText);
     setModalVisible(false);
-    const newGoal = { text: inputText, owner: auth.currentUser.uid };
+    const newGoal = { text: inputText.text, owner: auth.currentUser.uid };
     // setGoals((currentGoals) => {
     //   return [...currentGoals, newGoal];
     // });

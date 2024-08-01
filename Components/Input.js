@@ -8,9 +8,11 @@ import {
   Image,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
+import ImageManager from "./ ImageManager";
 
 const Input = ({ isVisible, onConfirm, onCancel }) => {
   const [text, setText] = useState("");
+  const [imageUri, setImageUri] = useState(null);
   const inputRef = useRef();
 
   useEffect(() => {
@@ -20,7 +22,7 @@ const Input = ({ isVisible, onConfirm, onCancel }) => {
   }, [isVisible]);
 
   const handleConfirm = () => {
-    onConfirm(text);
+    onConfirm({text,imageUri});
     setText("");
   };
 
@@ -28,6 +30,11 @@ const Input = ({ isVisible, onConfirm, onCancel }) => {
     onCancel();
     setText("");
   };
+
+  function imageUriHandler(uri) {
+    // console.log("Image URI: ", uri);
+    setImageUri(uri);
+  }
 
   return (
     <Modal animationType="slide" visible={isVisible} transparent={true}>
@@ -40,6 +47,7 @@ const Input = ({ isVisible, onConfirm, onCancel }) => {
             onChangeText={setText}
             ref={inputRef}
           />
+          <ImageManager imageUriHandler={imageUriHandler} />
           <View style={styles.buttonContainer}>
             <Button title="Confirm" onPress={handleConfirm} disabled={!text} />
             <Button title="Cancel" onPress={handleCancel} />
