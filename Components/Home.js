@@ -13,9 +13,10 @@ import GoalItem from "./GoalItem";
 import GoalUsers from "./GoalUsers";
 import PressableButton from "./PressableButton";
 import { writeToDB } from "../Firebase/firestoreHelper";
-import { collection, onSnapshot } from "firebase/firestore";
-import { database } from "../Firebase/firebaseSetup";
+import { collection, onSnapshot, query } from "firebase/firestore";
+import { auth, database } from "../Firebase/firebaseSetup";
 import { deleteFromDB } from "../Firebase/firestoreHelper";
+import { where } from "firebase/firestore"; 
 
 export default function Home({ navigation }) {
   const appName = "Summer 2024 Class";
@@ -25,7 +26,10 @@ export default function Home({ navigation }) {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      collection(database, collectionName),
+      query(
+        collection(database, collectionName),
+        where("owner", "==", auth.currentUser.uid)
+      ),
       (querySnapShot) => {
         let newArray = [];
 
@@ -34,8 +38,10 @@ export default function Home({ navigation }) {
             newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
           });
         }
-        setGoals(newArray);
-      }
+        setGoals(newArray);},
+        (error) => {   
+            console.log("Error reading all documents: ", error);
+            }
     );
 
     return () => {
@@ -45,7 +51,7 @@ export default function Home({ navigation }) {
 
   const handleConfirm = (inputText) => {
     setModalVisible(false);
-    const newGoal = { text: inputText, id: Math.random() };
+    const newGoal = { text: inputText, owner: auth.currentUser.uid };
     // setGoals((currentGoals) => {
     //   return [...currentGoals, newGoal];
     // });

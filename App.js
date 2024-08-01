@@ -83,8 +83,7 @@ export default function App() {
         setIsUserAuthenticated(false);
       }
     });
-    setIsUserAuthenticated(true);
-  }, []);
+   }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator
