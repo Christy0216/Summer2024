@@ -40,14 +40,9 @@ export async function addWarningToGoal(id, collectionName) {
 
 export async function readAllDocs(collectionName) {
   try {
-    const querySnapShot = await getDocs(
-      query(
-        collection(database, collectionName),
-        where("owner", "==", auth.currentUser.uid)
-      )
-    );
+    const querySnapshot = await getDocs(collection(database, collectionName));
     let newArray = [];
-    querySnapShot.forEach((docSnapshot) => {
+    querySnapshot.forEach((docSnapshot) => {
       newArray.push(docSnapshot.data());
     });
     console.log("All documents: ", newArray);
