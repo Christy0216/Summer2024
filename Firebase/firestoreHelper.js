@@ -42,11 +42,13 @@ export async function readAllDocs(collectionName) {
   try {
     const querySnapshot = await getDocs(collection(database, collectionName));
     let newArray = [];
-    querySnapshot.forEach((docSnapshot) => {
-      newArray.push(docSnapshot.data());
-    });
-    console.log("All documents: ", newArray);
-    return newArray;
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach((docSnapshot) => {
+        newArray.push(docSnapshot.data());
+      });
+      console.log("All documents: ", newArray);
+      return newArray;
+    }
   } catch (error) {
     console.error("Error reading all documents: ", error);
   }
