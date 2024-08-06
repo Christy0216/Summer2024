@@ -47,8 +47,8 @@ export async function readAllDocs(collectionName) {
         newArray.push(docSnapshot.data());
       });
       console.log("All documents: ", newArray);
-      return newArray;
     }
+    return newArray;
   } catch (error) {
     console.error("Error reading all documents: ", error);
   }
