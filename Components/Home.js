@@ -10,13 +10,14 @@ import {
 import Header from "./Header";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
-import GoalUsers from "./GoalUsers";
 import PressableButton from "./PressableButton";
 import { writeToDB } from "../Firebase/firestoreHelper";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { auth, database } from "../Firebase/firebaseSetup";
 import { deleteFromDB } from "../Firebase/firestoreHelper";
-import { where } from "firebase/firestore"; 
+import { where } from "firebase/firestore";
+import { ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../Firebase/firebaseSetup";
 
 export default function Home({ navigation }) {
   const appName = "Summer 2024 Class";
@@ -38,10 +39,11 @@ export default function Home({ navigation }) {
             newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
           });
         }
-        setGoals(newArray);},
-        (error) => {   
-            console.log("Error reading all documents: ", error);
-            }
+        setGoals(newArray);
+      },
+      (error) => {
+        console.log("Error reading all documents: ", error);
+      }
     );
 
     return () => {
@@ -49,15 +51,41 @@ export default function Home({ navigation }) {
     };
   }, []);
 
-  const handleConfirm = (inputText) => {
+  async function retreiveUploadImage(uri) {
+    try {
+      const response = await fetch(uri);
+      console.log("Response: ", response);
+      if (!response.ok) {
+        throw new Error("The request was not successful.");
+      }
+      const blob = await response.blob();
+      const imageName = uri.substring(uri.lastIndexOf("/") + 1);
+      const imageRef = ref(storage, `images/${imageName}`);
+      const uploadResult = await uploadBytesResumable(imageRef, blob);
+      return uploadResult.metadata.fullPath;
+    } catch (error) {
+      console.error("Error uploading image: ", error);
+    }
+  }
+
+  async function handleConfirm(inputText) {
     console.log("callback", inputText);
+    let imageUri = "";
+    if (inputText.imageUri) {
+      imageUri = await retreiveUploadImage(inputText.imageUri);
+    }
     setModalVisible(false);
-    const newGoal = { text: inputText.text, owner: auth.currentUser.uid };
+    console.log("retrived image uri: ", imageUri);
+    const newGoal = {
+      text: inputText.text,
+      owner: auth.currentUser.uid,
+      imageUri: imageUri,
+    };
     // setGoals((currentGoals) => {
     //   return [...currentGoals, newGoal];
     // });
     writeToDB(newGoal, "goals");
-  };
+  }
 
   const handleCancel = () => {
     setModalVisible(false);
