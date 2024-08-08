@@ -4,10 +4,12 @@ import * as Location from "expo-location";
 import { mapsApiKey } from "@env";
 import { useState } from "react";
 import { Dimensions } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const windowWidth = Dimensions.get("window").width;
 
 const LocationManager = () => {
+    const navigation = useNavigation();
   const [response, requestPermission] = Location.useForegroundPermissions();
   const [location, setLocation] = useState(null);
 
@@ -37,10 +39,15 @@ const LocationManager = () => {
       console.log("Error in locateUserHandler: ", err);
     }
   };
+
+  function chooseLocationHandler() {
+    navigation.navigate("Map");
+  }
   
   return (
     <View>
       <Button title="Find My Location" onPress={locateUserHandler} />
+      <Button  title="Let me choose my location" onPress={chooseLocationHandler} />
       {location && (
         <Image
           source={{
