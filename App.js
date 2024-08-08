@@ -11,6 +11,7 @@ import Profile from "./Components/Profile";
 import Iconicons from "react-native-vector-icons/Ionicons";
 import PressableButton from "./Components/PressableButton";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Map from "./Components/Map";
 
 const Stack = createNativeStackNavigator();
 
@@ -70,6 +71,7 @@ const AppStack = (
         },
       }}
     />
+    <Stack.Screen name="Map" component={Map} />
   </>
 );
 
@@ -83,7 +85,7 @@ export default function App() {
         setIsUserAuthenticated(false);
       }
     });
-   }, []);
+  }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator
