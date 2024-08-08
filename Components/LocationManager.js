@@ -1,15 +1,22 @@
 import { View, Button, Image, StyleSheet } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import * as Location from "expo-location";
 import { mapsApiKey } from "@env";
 import { useState } from "react";
 import { Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation,useRoute } from "@react-navigation/native";
 
 const windowWidth = Dimensions.get("window").width;
 
 const LocationManager = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+  const route = useRoute();
+  console.log(route.params);
+  useEffect(() => {
+    if (route.params) {
+      setLocation(route.params.selectedLocation);
+    }
+  },[route]);
   const [response, requestPermission] = Location.useForegroundPermissions();
   const [location, setLocation] = useState(null);
 
@@ -43,11 +50,14 @@ const LocationManager = () => {
   function chooseLocationHandler() {
     navigation.navigate("Map");
   }
-  
+
   return (
     <View>
       <Button title="Find My Location" onPress={locateUserHandler} />
-      <Button  title="Let me choose my location" onPress={chooseLocationHandler} />
+      <Button
+        title="Let me choose my location"
+        onPress={chooseLocationHandler}
+      />
       {location && (
         <Image
           source={{
