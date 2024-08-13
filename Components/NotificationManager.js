@@ -17,7 +17,7 @@ export async function verifyPermissions() {
   }
 }
 
-const NotificationManager = async () => {
+const NotificationManager = () => {
   async function scheduleNotificationHandler() {
     try {
       const hasPermission = await verifyPermissions();
