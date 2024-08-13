@@ -12,6 +12,8 @@ import Iconicons from "react-native-vector-icons/Ionicons";
 import PressableButton from "./Components/PressableButton";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Map from "./Components/Map";
+import * as Notifications from "expo-notifications";
+import { Linking } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
@@ -75,8 +77,15 @@ const AppStack = (
   </>
 );
 
+Notifications.setNotificationHandler({
+  handleNotification: async (notification) => {
+    return { shouldShowAlert: true };
+  },
+});
+
 export default function App() {
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -86,6 +95,23 @@ export default function App() {
       }
     });
   }, []);
+
+  useEffect(() => {
+    const subscription = Notifications.addNotificationReceivedListener(
+      (notificationResponse) => {
+        console.log(
+          "notification received",
+          notificationResponse.notification.request.content.data.url
+        );
+        Linking.openURL(
+          notificationResponse.notification.request.content.data.url
+        );
+      }
+    );
+
+    return () => subscription.remove();
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator
