@@ -6,6 +6,8 @@ import {
   Text,
   StatusBar,
   FlatList,
+  Alert,
+  Platform,
 } from "react-native";
 import Header from "./Header";
 import Input from "./Input";
@@ -18,12 +20,40 @@ import { deleteFromDB } from "../Firebase/firestoreHelper";
 import { where } from "firebase/firestore";
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../Firebase/firebaseSetup";
+import * as Notifications from "expo-notifications";
+import { verifyPermissions } from "./NotificationManager";
+import Constants from "expo-constants";
 
 export default function Home({ navigation }) {
   const appName = "Summer 2024 Class";
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
   const collectionName = "goals";
+
+  useEffect(() => {
+    async function getToken() {
+      try {
+        const hasPermission = await verifyPermissions();
+        if (!hasPermission) {
+          Alert.alert("You need to enable notifications");
+          return;
+        }
+        if (Platform.OS === "android") {
+          await Notifications.setNotificationChannelAsync("default", {
+            name: "default",
+            importance: Notifications.AndroidImportance.MAX,
+          });
+        }
+
+        const tokenData = await Notifications.getExpoPushTokenAsync({
+          projectId: Constants.expoConfig.extra.eas.projectId
+        });
+      } catch (error) {
+        console.log("Error getting token: ", error);
+      }
+    }
+    getToken();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
