@@ -12,13 +12,20 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "buildNumber": "1.0.0",
+      "bundleIdentifier": "com.christy0216.Summer2024"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.christy0216.Summer2024"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -31,6 +38,11 @@
           "photoPermission": "The app needs access to your gallery."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "fd7868c4-fd5c-441e-96f4-04e1903e040b"
+      }
+    }
   }
 }
