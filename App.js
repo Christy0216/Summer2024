@@ -98,9 +98,17 @@ export default function App() {
 
   useEffect(() => {
     const subscription = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log("notification received", notification);
+      }
+    );
+    return () => subscription.remove();
+  }, []);
+  useEffect(() => {
+    const subscription = Notifications.addNotificationResponseReceivedListener(
       (notificationResponse) => {
         console.log(
-          "notification received",
+          "notification response",
           notificationResponse.notification.request.content.data.url
         );
         Linking.openURL(

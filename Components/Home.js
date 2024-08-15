@@ -8,6 +8,7 @@ import {
   FlatList,
   Alert,
   Platform,
+  Button,
 } from "react-native";
 import Header from "./Header";
 import Input from "./Input";
@@ -46,8 +47,9 @@ export default function Home({ navigation }) {
         }
 
         const tokenData = await Notifications.getExpoPushTokenAsync({
-          projectId: Constants.expoConfig.extra.eas.projectId
+          projectId: Constants.expoConfig.extra.eas.projectId,
         });
+        console.log("Token Data: ", tokenData);
       } catch (error) {
         console.log("Error getting token: ", error);
       }
@@ -121,6 +123,20 @@ export default function Home({ navigation }) {
     setModalVisible(false);
   };
 
+  function pushNotificationHandler() {
+    fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        to: "ExponentPushToken[mE1-JiDoCpa2rD2rOvr44V]",
+        title: "Push Notification",
+        body: "This is a push notification",
+      }),
+    });
+  }
+
   function handleDelete(deletedId) {
     console.log("goal deleted", deletedId);
     // setGoals((currentGoals) => {
@@ -146,6 +162,12 @@ export default function Home({ navigation }) {
         >
           <Text style={styles.textStyle}>Add a goal</Text>
         </PressableButton>
+        <Button
+          title="test for push notification"
+          onPress={() => {
+            pushNotificationHandler();
+          }}
+        />
         {/* <TouchableOpacity
           style={styles.goalButton}
           onPress={() => setModalVisible(true)}
